@@ -1,42 +1,32 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
-
 
 public class MainClass {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args)  {
         String fileName = "text.txt";
-        File file = new File(fileName);
-        Scanner scanner = new Scanner(file);
-
-        boolean isFileExists = file.exists();
-
-        if(!isFileExists){
-            try {
-                isFileExists = file.createNewFile();
-
-
-            }catch (IOException ex){
-                System.out.println("File not created");
-            }
-        }
-
-        if(isFileExists){
-            System.out.printf("File "+fileName+" exists");
-        }
-
-        int lines = 0;
-        while(scanner.hasNextLine()){
-            String name = scanner.nextLine();
-            System.out.println(name);
-            lines ++;
-
-        }
-
-        System.out.println("Rows in file: "+lines);
-
-        scanner.close();
-
+        FileReader fr = null;
+        BufferedReader  br = null;
+       try{
+            fr = new FileReader(fileName);
+            br = new BufferedReader(fr);
+           int lines = 0;
+           String nextLine = null;
+           while((nextLine = br.readLine())!= null){
+               System.out.println(nextLine);
+               lines ++;
+           }
+           System.out.println("File have "+lines+" lines.");
+       }catch (IOException ex){
+           ex.printStackTrace();
+       }finally {
+           try{
+               if(br != null){
+                   br.close();
+               }
+           }catch (IOException ex){
+               ex.printStackTrace();
+           }
+       }
     }
 }
